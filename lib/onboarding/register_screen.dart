@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_textbox.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/home_screen.dart';
+import 'package:rental_car_app/onboarding/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -22,7 +24,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 22, 22, 22),
-        padding: const EdgeInsets.only(left: 20,right: 20, top: 30,),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 30,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -37,7 +43,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 color: Colors.amber,
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -74,9 +82,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Button(
+                    Button(
                       buttonText: "Sign Up",
-                    )
+                      action: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                        onTap: (() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LoginScreen()));
+                        }),
+                        child: const Text(
+                          "Already have an account? Login",
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ))
                   ],
                 ),
               ),

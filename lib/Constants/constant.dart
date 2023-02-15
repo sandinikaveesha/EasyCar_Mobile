@@ -20,5 +20,9 @@ TextStyle formTitle = TextStyle(
     fontSize: 15, fontWeight: FontWeight.w400, color: Colors.grey.shade800);
 const TextStyle formTitleLight =
     TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white);
+    TextStyle formTitleBold = TextStyle(
+    fontSize: 15, fontWeight: FontWeight.w700, color: Colors.grey.shade800);
+const TextStyle formTitleBoldLight =
+    TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white);
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
-import 'package:rental_car_app/Screens/onboarding/register_screen.dart';
+import 'package:rental_car_app/Screens/Onboarding/register_screen.dart';
 
 import '../../Components/button.dart';
 import '../../Components/custom_textbox.dart';

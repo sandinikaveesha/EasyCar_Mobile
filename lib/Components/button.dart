@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Constants/constant.dart';
 
 class Button extends StatelessWidget {
-  const Button({Key? key, required this.buttonText, this.action})
+  const Button({Key? key, required this.buttonText, required this.action})
       : super(key: key);
 
   final String buttonText;
-  final VoidCallback? action;
+  final VoidCallback action;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class Button extends StatelessWidget {
         ),
         child: Text(
           buttonText,
-          style: normalTextLight,
+          style: normalTextBoldLight,
         ),
       ),
     );

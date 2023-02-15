@@ -1,9 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/vehicle_details_card.dart';
 import 'package:rental_car_app/Constants/constant.dart';
-import 'package:rental_car_app/Screens/filter_screen.dart';
-
 import '../Components/custom_bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,11 +8,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> imageList = [
-      'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2018-rolls-royce-phantom-1536152159.png',
-      'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2634-genesisunveilsg90exteriorimages-1638281750.jpg',
-      'https://cdn.luxe.digital/media/20220718163630/best-luxury-car-brands-bugatti-2022-luxe-digital.jpg'
-    ];
+    
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -86,39 +79,40 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const FilterScreen()));
-                  },
-                  child: const Icon(Icons.sort_sharp, color: Colors.white, size: 24,)),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(context, MaterialPageRoute(builder: (context)=>const FilterScreen()));
+                //   },
+                //   child: const Icon(Icons.sort_sharp, color: Colors.white, size: 24,)),
               ],
             ),
             const SizedBox(
               height: 20,
             ),
-            // Column(
-            //   children: [
-            //     CarouselSlider(
-            //       items: imageList
-            //           .map((item) => Center(
-            //                 child: Image.network(
-            //                   item,
-            //                   fit: BoxFit.cover,
-            //                   width: 1000,
-            //                 ),
-            //               ))
-            //           .toList(),
-            //       options: CarouselOptions(
-            //           autoPlay: true,
-            //           aspectRatio: 2.0,
-            //           enlargeCenterPage: true),
-            //     ),
-            //   ],
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            
+            Expanded(
+              flex: 1,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (context,index){
+                return GestureDetector(
+                  onTap: (){},
+                  child: Container(
+                    width: 80,
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 5,),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Text("Name", style: normalTextBold,),
+                    ),
+                  ),
+                );
+              }),
+            ),
+            const SizedBox(height: 20,),
             const Align(
               alignment: Alignment.topLeft,
               child: Text(
@@ -126,7 +120,9 @@ class HomeScreen extends StatelessWidget {
                 style: subHeadingLight,
               ),
             ),
-            Expanded(child: ListView.builder(itemBuilder: (context, index) => VehicleDetailsCard(), itemCount: 5,))
+            Expanded(
+              flex: 10,
+              child: ListView.builder(itemBuilder: (context, index) => VehicleDetailsCard(), itemCount: 5,))
           ],
         ),
       ),

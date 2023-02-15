@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_textbox.dart';
 import 'package:rental_car_app/Constants/constant.dart';
-import 'package:rental_car_app/home_screen.dart';
-import 'package:rental_car_app/onboarding/login_screen.dart';
+import 'package:rental_car_app/Screens/home_screen.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

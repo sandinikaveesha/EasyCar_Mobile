@@ -19,12 +19,12 @@ class Button extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all(Colors.white),
           backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 14, 93, 183)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25)
+            borderRadius: BorderRadius.circular(10)
           ))
         ),
         child: Text(
           buttonText,
-          style: normalTextBoldLight,
+          style: formTitleBoldLight,
         ),
       ),
     );

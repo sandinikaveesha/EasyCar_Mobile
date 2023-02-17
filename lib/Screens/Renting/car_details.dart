@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_back_button.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Screens/home_screen.dart';
 
 class CarDetails extends StatelessWidget {
   const CarDetails({super.key});
@@ -30,7 +31,14 @@ class CarDetails extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            CustomBackButton(onTap: () {}),
+            CustomBackButton(onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ),
+              );
+            }),
             const SizedBox(
               height: 20,
             ),

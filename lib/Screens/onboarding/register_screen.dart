@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     CustomTextbox(hintText: "Password", controller: _password),
                     const SizedBox(
-                      height: 20,
+                      height: 30,
                     ),
                     Button(
                       buttonText: "Sign Up",

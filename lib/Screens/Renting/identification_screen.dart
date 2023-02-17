@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_textbox.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rental_car_app/Screens/Renting/license_screen.dart';
 import '../../Components/custom_back_button.dart';
 import '../../Constants/constant.dart';
 import '../../Utils/image_utility.dart';
 import 'car_details.dart';
 
-class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+class IdentificationScreen extends StatefulWidget {
+  const IdentificationScreen({super.key});
 
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
+  State<IdentificationScreen> createState() => _IdentificationScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _IdentificationScreenState extends State<IdentificationScreen> {
   late String valueChoose;
   List listItems = ['National ID', 'Passport'];
   final TextEditingController _idNumber = TextEditingController();
@@ -134,7 +135,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     controller: _lastName,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   const Text(
                     "Upload Identification Photos",
@@ -178,8 +179,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50,),
-                  Button(buttonText: "Next", action: (){}),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Button(
+                      buttonText: "Next",
+                      action: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LicenseScreen(),
+                          ),
+                        );
+                      }),
                 ],
               ),
             ),

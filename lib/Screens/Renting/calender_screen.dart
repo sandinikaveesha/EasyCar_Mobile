@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Constants/constant.dart';
 import 'package:rental_car_app/Screens/Renting/car_details.dart';
-import 'package:rental_car_app/Screens/Renting/checkout_screen.dart';
+import 'package:rental_car_app/Screens/Renting/identification_screen.dart';
 
 import '../../Components/custom_back_button.dart';
 
@@ -124,7 +124,7 @@ class CalenderScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            Button(buttonText: "Next", action: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const CheckoutScreen()));})
+            Button(buttonText: "Next", action: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const IdentificationScreen()));})
           ],
         ),
       ),

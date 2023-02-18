@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_back_button.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Screens/Renting/calender_screen.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
 
 class CarDetails extends StatelessWidget {
@@ -272,7 +273,14 @@ class CarDetails extends StatelessWidget {
                       ),
                       Button(
                         buttonText: "Rent",
-                        action: () {},
+                        action: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CalenderScreen(),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

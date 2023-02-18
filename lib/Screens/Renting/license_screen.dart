@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rental_car_app/Screens/Renting/payment_confirmation_screen.dart';
 
 import '../../Components/button.dart';
 import '../../Components/custom_back_button.dart';
@@ -35,7 +36,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
         });
       });
     }
-    
+
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 22, 22, 22),
@@ -113,7 +114,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              Base64Decoder().convert(imgString),
+                              const Base64Decoder().convert(imgString),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -128,7 +129,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              Base64Decoder().convert(imgString),
+                              const Base64Decoder().convert(imgString),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -136,8 +137,20 @@ class _LicenseScreenState extends State<LicenseScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50,),
-                  Button(buttonText: "Next", action: (){}),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Button(
+                      buttonText: "Next",
+                      action: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const PaymentConfirmationScreen(),
+                          ),
+                        );
+                      }),
                 ],
               ),
             ),

@@ -114,10 +114,7 @@ class PaymentConfirmationScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "11 Sept - 15 Sept",
-              style: normalTextLight,
-            ),
+            const Text("11 Sept - 15 Sept", style: normalTextLight,),
             const SizedBox(
               height: 20,
             ),
@@ -131,46 +128,30 @@ class PaymentConfirmationScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Text(
-                  "Rs. 3500 * 5 ",
-                  style: normalTextLight,
-                ),
-                Text(
-                  "Rs.16500",
-                  style: normalTextLight,
-                ),
+                Text("Rs. 3500 * 5 ", style: normalTextLight,),
+                Text("Rs.16500", style: normalTextLight,),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Text(
-                  "Total Cost",
-                  style: normalTextBoldLight,
-                ),
-                Text(
-                  "Rs.16500",
-                  style: normalTextBoldLight,
-                ),
+                Text("Total Cost", style: normalTextBoldLight,),
+                Text("Rs.16500", style: normalTextBoldLight,),
               ],
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30,),
             Button(
-              buttonText: "Confirm & Pay",
-              action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SuccessMessageScreen(),
-                  ),
-                );
-              },
-            ),
+                        buttonText: "Confirm & Pay",
+                        action: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SuccessMessageScreen(),
+                            ),
+                          );
+                        },
+                      ),
           ],
         ),
       ),

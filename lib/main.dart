@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
       home: 
       // RegisterScreen()
       // CalenderScreen()
-      CarDetails()
+      // CarDetails()
       // HomeScreen(),
       // CompanyDetailsScreen()
-      // BookingDetailsScreen()
+      BookingDetailsScreen()
     );
   }
 }

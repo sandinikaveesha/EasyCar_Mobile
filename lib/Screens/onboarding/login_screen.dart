@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
@@ -39,7 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Container(
                 width: 100,
                 height: 100,
-                color: Colors.amber,
+                child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.memory(Base64Decoder().convert(sampleLogo)),
+                ),
               ),
             ),
             const SizedBox(

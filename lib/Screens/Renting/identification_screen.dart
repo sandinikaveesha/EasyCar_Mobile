@@ -61,6 +61,8 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
     
   
     return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: true,
       body: Container(
         color: const Color.fromARGB(255, 22, 22, 22),
         padding: const EdgeInsets.only(
@@ -78,10 +80,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const CarDetails()));
+                    Navigator.pop(context);
                   },
                 ),
                 const Text(
@@ -90,133 +89,135 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                 ),
               ],
             ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    "Identification",
-                    style: subHeadingLight,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 1),
-                      borderRadius: BorderRadius.circular(10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Identification",
+                      style: subHeadingLight,
                     ),
-                    child: DropdownButton<String>(
-                        value: valueChoose,
-                        dropdownColor: Colors.black,
-                        hint: const Text(
-                          "Select Identification Type",
-                          style: normalTextLight,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: DropdownButton<String>(
+                          value: valueChoose,
+                          dropdownColor: Colors.black,
+                          hint: const Text(
+                            "Select Identification Type",
+                            style: normalTextLight,
+                          ),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                          ),
+                          iconSize: 24,
+                          underline: const SizedBox(),
+                          items: listItems.map((valueItem) {
+                            return DropdownMenuItem<String>(
+                              value: valueItem,
+                              child: Text(valueItem, style: normalTextLight,),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            print(value);
+                            setState(() {
+                              valueChoose = value!;
+                            });
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    CustomTextbox(
+                      hintText: "Identification Number",
+                      controller: _idNumber,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextbox(
+                      hintText: "First Name",
+                      controller: _firstName,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextbox(
+                      hintText: "Last Name",
+                      controller: _lastName,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      "Upload Identification Photos",
+                      style: subHeadingLight,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: ()=>_imagePicker('nicFront'),
+                          child: SizedBox(
+                            height: 100,
+                            width: 150,
+                            child: ClipRRect(
+                              clipBehavior: Clip.antiAlias,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.memory(
+                                Base64Decoder().convert(nicFront),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.white,
+                        GestureDetector(
+                          onTap: ()=>_imagePicker('nicBack'),
+                          child: SizedBox(
+                            height: 100,
+                            width: 150,
+                            child: ClipRRect(
+                              clipBehavior: Clip.antiAlias,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.memory(
+                                Base64Decoder().convert(nicBack),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                        iconSize: 24,
-                        underline: const SizedBox(),
-                        items: listItems.map((valueItem) {
-                          return DropdownMenuItem<String>(
-                            value: valueItem,
-                            child: Text(valueItem, style: normalTextLight,),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Button(
+                        buttonText: "Next",
+                        action: () {
+                          if(valueChoose == "Select Identification Type" || _idNumber.text == null || _idNumber.text == "" || _firstName.text == null || _firstName.text == "" || _lastName.text == null || _lastName.text == "") return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LicenseScreen(vehicle: widget.vehicle, startDate: widget.startDate, endDate: widget.endDate, idType: valueChoose, id: _idNumber.text, firstName: _firstName.text, lastName: _lastName.text, agency: widget.agency,images: widget.images,),
+                            ),
                           );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          print(value);
-                          setState(() {
-                            valueChoose = value!;
-                          });
                         }),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CustomTextbox(
-                    hintText: "Identification Number",
-                    controller: _idNumber,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextbox(
-                    hintText: "First Name",
-                    controller: _firstName,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextbox(
-                    hintText: "Last Name",
-                    controller: _lastName,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
-                    "Upload Identification Photos",
-                    style: subHeadingLight,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: ()=>_imagePicker('nicFront'),
-                        child: SizedBox(
-                          height: 100,
-                          width: 150,
-                          child: ClipRRect(
-                            clipBehavior: Clip.antiAlias,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.memory(
-                              Base64Decoder().convert(nicFront),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: ()=>_imagePicker('nicBack'),
-                        child: SizedBox(
-                          height: 100,
-                          width: 150,
-                          child: ClipRRect(
-                            clipBehavior: Clip.antiAlias,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.memory(
-                              Base64Decoder().convert(nicBack),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Button(
-                      buttonText: "Next",
-                      action: () {
-                        // TODO: Validate the Data
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LicenseScreen(vehicle: widget.vehicle, startDate: widget.startDate, endDate: widget.endDate, idType: valueChoose, id: _idNumber.text, firstName: _firstName.text, lastName: _lastName.text, agency: widget.agency,images: widget.images,),
-                          ),
-                        );
-                      }),
-                ],
+                  ],
+                ),
+                ]
               ),
             ),
           ],

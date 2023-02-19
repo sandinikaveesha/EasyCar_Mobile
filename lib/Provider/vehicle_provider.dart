@@ -1,10 +1,12 @@
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rental_car_app/Controllers/CategoryController.dart';
 import 'package:rental_car_app/Controllers/VehicleController.dart';
 import 'package:rental_car_app/Models/Vehicle.dart';
 import 'package:rental_car_app/Repositories/category_repository.dart';
 import 'package:rental_car_app/Repositories/vehicle_repository.dart';
+import 'package:rental_car_app/Screens/home_screen.dart';
 
 import '../Models/Category.dart';
 
@@ -25,13 +27,17 @@ class VehicleProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void filterCategory(int id)async{
-    if(id == null){
+  void filterCategory(int id, BuildContext context)async{
+    print("call");
+    print(id);
+    if(id == 0){
       _vehicles = _anchor;
     }
     else{
-      _vehicles = _anchor.where((element) => element.brand == id).toList();
+      _vehicles = _anchor.where((element) => element.category == id).toList();
     }
+    print(_vehicles.length);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
     notifyListeners();
     
   }

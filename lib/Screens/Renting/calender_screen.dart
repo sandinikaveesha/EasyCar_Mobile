@@ -4,6 +4,7 @@ import 'package:rental_car_app/Constants/constant.dart';
 import 'package:rental_car_app/Models/Image.dart';
 import 'package:rental_car_app/Screens/Renting/car_details.dart';
 import 'package:rental_car_app/Screens/Renting/identification_screen.dart';
+import 'package:rental_car_app/Utils/utility_helper.dart';
 
 import '../../Components/custom_back_button.dart';
 import '../../Models/Agency.dart';
@@ -37,10 +38,7 @@ class CalenderScreen extends StatelessWidget {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const CarDetails()));
+                    Navigator.pop(context);
                   },
                 ),
                 const Text("Select Date", style: mainHeadingLight,),
@@ -135,7 +133,7 @@ class CalenderScreen extends StatelessWidget {
               height: 50,
             ),
             Button(buttonText: "Next", action: (){
-              // TODO: Validadate The Data
+              if(_bookingDateController.text == null || _bookingDateController.text == "" || _returnDateController.text == null || _returnDateController.text == "") return;
               print(_returnDateController.text);
               Navigator.push(context, MaterialPageRoute(builder: (context)=> IdentificationScreen(vehicle: vehicle, startDate: _bookingDateController.text, endDate: _returnDateController.text, agency: agency,images: images,)));})
           ],
@@ -143,4 +141,5 @@ class CalenderScreen extends StatelessWidget {
       ),
     );
   }
+  _handleNext(){}
 }

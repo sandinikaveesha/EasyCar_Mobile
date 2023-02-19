@@ -41,70 +41,75 @@ class _PendingDetailsState extends State<PendingDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        SizedBox(height: 10,),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "${vehicle.registrationNo}",
-                style: formTitleBold,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${vehicle.registrationNo}",
+                    style: formTitleBold,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    "${vehicle.model}",
+                    style: normalText,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    "${_dateTimeFormat(widget.booking.startDate.toString())} - ${_dateTimeFormat(widget.booking.endDate.toString())}",
+                    style: normalText,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    "${widget.booking.status}",
+                    style: normalText,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 3,
-              ),
-              Text(
-                "${vehicle.model}",
-                style: normalText,
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              Text(
-                "${_dateTimeFormat(widget.booking.startDate.toString())} - ${_dateTimeFormat(widget.booking.endDate.toString())}",
-                style: normalText,
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              Text(
-                "${widget.booking.status}",
-                style: normalText,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QrScreen(booking: widget.booking,),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.qr_code,
+                    color: Colors.black,
+                    size: 50,
+                  ),
+                ),
               ),
             ],
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QrScreen(booking: widget.booking,),
-                ),
-              );
-            },
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.qr_code,
-                color: Colors.black,
-                size: 50,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

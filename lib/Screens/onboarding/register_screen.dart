@@ -28,14 +28,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String imgString = sampleUpload;
 
-  // Dependency 
+  // Dependency
   var _customerController = CustomerController(CustomerRepository());
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 22, 22, 22),
@@ -59,24 +56,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.amber,
                   ),
-                  child: ClipRRect(clipBehavior: Clip.antiAlias,
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.memory(Base64Decoder().convert(imgString), fit: BoxFit.cover,),
+                  child: ClipRRect(
+                    clipBehavior: Clip.antiAlias,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.memory(
+                      Base64Decoder().convert(sampleLogo),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     const Text(
                       "Create an account",
@@ -107,7 +107,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomTextbox(hintText: "Confirm Password", controller: _confirmPassword),
+                    CustomTextbox(
+                        hintText: "Confirm Password",
+                        controller: _confirmPassword),
                     const SizedBox(
                       height: 30,
                     ),
@@ -122,7 +124,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     GestureDetector(
                         onTap: (() {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
                         }),
                         child: const Text(
                           "Already have an account? Login",
@@ -142,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // Img Handle
-   _imgPicker() async {
+  _imgPicker() async {
     String output;
     ImagePicker().pickImage(source: ImageSource.gallery).then((img) async {
       output = Utility.base64String(await img!.readAsBytes());
@@ -153,9 +158,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // Registration Process
-  _register(BuildContext context) async{
-    // TODO: Validate All the Data if(_password.text == null || _password.text == "") return Utility.notification("Required Field are Missing!", context, false);
-    if(_password.text != _confirmPassword.text) return Utility.notification("Password Does not Matched!", context, false);
+  _register(BuildContext context) async {
+    if (_password.text == null ||
+        _password.text == "" ||
+        _firstName.text == null ||
+        _firstName.text == "" ||
+        _lastName.text == null ||
+        _lastName.text == "" ||
+        _email.text == null ||
+        _email.text == "" ||
+        _phone.text == null ||
+        _phone.text == "" ||
+        _confirmPassword.text == null ||
+        _confirmPassword.text == "")
+      return Utility.notification(
+          "Required Field are Missing!", context, false);
+
+    if (_password.text != _confirmPassword.text)
+      return Utility.notification("Password Does not Matched!", context, false);
     var data = {
       'firstName': _firstName.text,
       'lastName': _lastName.text,
@@ -164,12 +184,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'password': _password.text,
       'img': null
     };
-    if(_customerController.register(data)){
+    if (_customerController.register(data)) {
       Utility.notification("Successfully Registered", context, true);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
-    }
-    else{
-       Utility.notification("Something Went Wrong!", context, false);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } else {
+      Utility.notification("Something Went Wrong!", context, false);
     }
   }
 }

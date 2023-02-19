@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rental_car_app/Controllers/BookingController.dart';
 import 'package:rental_car_app/Models/Customer.dart';
 import 'package:rental_car_app/Models/Image.dart';
+import 'package:rental_car_app/Provider/booking_provider.dart';
 import 'package:rental_car_app/Repositories/booking_repository.dart';
 import 'package:rental_car_app/Utils/utility_helper.dart';
 
@@ -88,6 +89,8 @@ class _PaymentConfirmationScreenState extends State<PaymentConfirmationScreen> {
     if(response == "Vehicle is Already Booked"){
       Utility.notification("Vehicle is Already Booked", ctx, false);
     }else{
+      Provider.of<BookingProvider>(context, listen: false).fetchBookings(int.parse(user.id.toString()));
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(

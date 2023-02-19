@@ -15,17 +15,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  List<Vehicle> vehicles = [];
+ categoryFilter(int id, List<Vehicle> anchor){
+      print(id);
+      List<Vehicle> temp = [];
+      if(id > 0){
+        temp = anchor.where((vehicle) => vehicle.category.toString() == id.toString()).toList();
+        print(temp.length);
+      }
+      else{
+        temp = anchor;
+      }
+      print("test");
+      setState(() {
+        vehicles = temp;
+      });
+      
+    }
 
   @override
   Widget build(BuildContext context) {
     List<Category>  categories = context.watch<VehicleProvider>().categories;
-    List<Vehicle> vehicles = context.watch<VehicleProvider>().vehicles;
+    List<Vehicle> anchor = context.watch<VehicleProvider>().vehicles;
+    
+    categories = [...categories, Category(id: 0, title: "All", description: "")];
 
     fetchVehicles() async{
-      List<Vehicle> vehicles = context.watch<VehicleProvider>().vehicles;
-      return vehicles;
+      List<Vehicle> response = context.watch<VehicleProvider>().vehicles;
+      setState(() {
+        vehicles = response;
+      });
     }
+
+    
+   fetchVehicles();
 
     return Scaffold(
       body: Container(
@@ -112,10 +135,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
-                itemBuilder: (context,index){
+                itemBuilder: (ctx,index){
                 return GestureDetector(
                   onTap: (){
-                    Provider.of<VehicleProvider>(context, listen: false).filterCategory(1);
+                      Provider.of<VehicleProvider>(context, listen: false).filterCategory(int.parse(categories[index].id.toString()), context);
                   },
                   child: Container(
                     width: 80,
@@ -145,23 +168,31 @@ class _HomeScreenState extends State<HomeScreen> {
             //   child: ListView.builder(itemBuilder: (context, index) => VehicleDetailsCard(vehicle: vehicles[index],), itemCount: vehicles.length,))
             Expanded(
   flex: 10,
-  child: FutureBuilder<List<Vehicle>>(
-    future: fetchVehicles(), // replace with your own Future method that returns a List<Vehicle>
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        List<Vehicle> vehicles = snapshot.data!;
-        return ListView.builder(
-          itemCount: vehicles.length,
-          itemBuilder: (context, index) => VehicleDetailsCard(vehicle: vehicles[index]),
-        );
-      } else if (snapshot.hasError) {
-        return Text("Error: ${snapshot.error}");
-      } else {
-        return Center(child: CircularProgressIndicator());
-      }
-    },
+  // child: FutureBuilder<List<Vehicle>>(
+  //   future: fetchVehicles(), // replace with your own Future method that returns a List<Vehicle>
+  //   builder: (context, snapshot) {
+  //     if (snapshot.hasData) {
+  //       List<Vehicle> vehicles = snapshot.data!;
+  //       return ListView.builder(
+  //         itemCount: vehicles.length,
+  //         itemBuilder: (context, index) => VehicleDetailsCard(vehicle: vehicles[index]),
+  //       );
+  //     } else if (snapshot.hasError) {
+  //       return Text("Error: ${snapshot.error}");
+  //     } else {
+  //       return Center(child: CircularProgressIndicator(color: Colors.white,));
+  //     }
+  //   },
+  child: Consumer<VehicleProvider>(builder: (context, vehicleProvider, child){
+    return ListView.builder(
+      itemCount: vehicleProvider.vehicles.length,
+      itemBuilder: (context, index){
+        return VehicleDetailsCard(vehicle: vehicleProvider.vehicles[index]);
+      });
+  }),
   ),
-)
+
+
           ],
         ),
       ),

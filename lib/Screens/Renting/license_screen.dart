@@ -81,10 +81,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const CarDetails()));
+                    Navigator.pop(context);
                   },
                 ),
                 const Text(
@@ -169,6 +166,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                   Button(
                       buttonText: "Next",
                       action: () {
+                        if(_licenseNumber.text == null || _licenseNumber.text == "" || _expiryDate.text == null || _expiryDate.text == "") return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(

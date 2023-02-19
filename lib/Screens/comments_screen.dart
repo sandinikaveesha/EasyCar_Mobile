@@ -28,12 +28,12 @@ class CommentsScreen extends StatelessWidget {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CarDetails(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const CarDetails(),
+                    //   ),
+                    // );
                   },
                 ),
                 const Text(

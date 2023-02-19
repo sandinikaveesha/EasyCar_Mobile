@@ -1,9 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Controllers/VehicleController.dart';
+import 'package:rental_car_app/Models/Booking.dart';
+import 'package:rental_car_app/Models/Vehicle.dart';
+import 'package:rental_car_app/Repositories/vehicle_repository.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
+import 'package:intl/intl.dart';
 
-class HistoryDetails extends StatelessWidget {
-  const HistoryDetails({super.key});
+class HistoryDetails extends StatefulWidget {
+  const HistoryDetails({super.key, required this.booking});
+  final Booking booking;
+
+  @override
+  State<HistoryDetails> createState() => _HistoryDetailsState();
+}
+
+class _HistoryDetailsState extends State<HistoryDetails> {
+  Vehicle vehicle = Vehicle();
+  var _vehicleController = VehicleController(VehicleRepository());
+
+  _fetchVehicle(int vehicleId) async{
+    Vehicle temp = await _vehicleController.get(vehicleId);
+    setState(() {
+      vehicle = temp;
+    });
+  }
+
+  String _dateTimeFormat(String date){
+    DateTime dateTime = DateTime.parse(date);
+    String formattedDate = DateFormat('d MMM yyyy').format(dateTime);
+    return formattedDate;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchVehicle(int.parse(widget.booking.vehicleRef.toString()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +54,28 @@ class HistoryDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "BHV-2749",
+                "${vehicle.registrationNo}",
                 style: formTitleBold,
               ),
               const SizedBox(
                 height: 3,
               ),
               Text(
-                "Car",
+                "${vehicle.model}",
                 style: normalText,
               ),
               const SizedBox(
                 height: 3,
               ),
               Text(
-                "From - to date",
+                "${_dateTimeFormat(widget.booking.startDate.toString())} - ${_dateTimeFormat(widget.booking.endDate.toString())}",
                 style: normalText,
               ),
               const SizedBox(
                 height: 3,
               ),
               Text(
-                "Status",
+                "${widget.booking.status}",
                 style: normalText,
               ),
             ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
 import 'package:rental_car_app/Screens/Onboarding/register_screen.dart';
 
 import '../../Components/button.dart';
 import '../../Components/custom_textbox.dart';
 import '../../Constants/constant.dart';
+import '../../Provider/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -67,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Button(
                       buttonText: "Sign In",
-                      action: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()),);},
+                      action: (){
+                        _login(context);
+                      },
                     ),
                     const SizedBox(
                       height: 10,
@@ -90,5 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  _login(BuildContext context){
+    print("login");
+    Provider.of<User>(context, listen: false).login(_email.text, _password.text, context);
   }
 }

@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rental_car_app/Models/Agency.dart';
+import 'package:rental_car_app/Models/Image.dart';
+import 'package:rental_car_app/Models/Vehicle.dart';
 import 'package:rental_car_app/Screens/Renting/payment_confirmation_screen.dart';
 
 import '../../Components/button.dart';
@@ -12,7 +15,17 @@ import '../../Utils/image_utility.dart';
 import 'car_details.dart';
 
 class LicenseScreen extends StatefulWidget {
-  const LicenseScreen({super.key});
+  const LicenseScreen({super.key, required this.images,required this.vehicle, required this.startDate, required this.endDate, required this.idType, required this.id, required this.firstName, required this.lastName, required this.agency});
+
+  final Vehicle vehicle;
+  final String startDate;
+  final String endDate;
+  final String idType;
+  final String id;
+  final String firstName;
+  final String lastName;
+  final Agency agency;
+  final List<VehicleImage> images;
 
   @override
   State<LicenseScreen> createState() => _LicenseScreenState();
@@ -22,20 +35,33 @@ class _LicenseScreenState extends State<LicenseScreen> {
   final TextEditingController _licenseNumber = TextEditingController();
   final TextEditingController _expiryDate = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    String imgString = sampleUpload;
+  String imgFront = sampleUpload;
+  String imgBack = sampleUpload;
     // Handle Image Picker
-    _imagePicker() async {
+    _imagePicker(path) async {
       String output;
       ImagePicker().pickImage(source: ImageSource.gallery).then((img) async {
         output = ImageUtility.base64String(await img!.readAsBytes());
         print(output);
+        if(path == 'front'){
         setState(() {
-          imgString = output;
+          imgFront = output;
         });
+        }
+        else{
+          setState(() {
+            imgBack = output;
+          });
+        }
+        
       });
     }
+
+   
+
+  @override
+  Widget build(BuildContext context) {
+    
 
     return Scaffold(
       body: Container(
@@ -55,10 +81,10 @@ class _LicenseScreenState extends State<LicenseScreen> {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CarDetails()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const CarDetails()));
                   },
                 ),
                 const Text(
@@ -89,7 +115,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                     height: 20,
                   ),
                   CustomTextbox(
-                    hintText: "First Name",
+                    hintText: "License Expire Date",
                     controller: _expiryDate,
                   ),
                   const SizedBox(
@@ -106,7 +132,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: _imagePicker,
+                        onTap: ()=>_imagePicker('front'),
                         child: SizedBox(
                           height: 100,
                           width: 150,
@@ -114,14 +140,14 @@ class _LicenseScreenState extends State<LicenseScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              const Base64Decoder().convert(imgString),
+                              const Base64Decoder().convert(imgFront),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: _imagePicker,
+                        onTap: ()=>_imagePicker('back'),
                         child: SizedBox(
                           height: 100,
                           width: 150,
@@ -129,7 +155,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              const Base64Decoder().convert(imgString),
+                              const Base64Decoder().convert(imgBack),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -147,7 +173,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const PaymentConfirmationScreen(),
+                                PaymentConfirmationScreen(vehicle: widget.vehicle, startDate: widget.startDate, endDate: widget.endDate,idType: widget.idType,id: widget.id,firstName: widget.firstName, lastName: widget.lastName, agency: widget.agency,licenseNumber: _licenseNumber.text, expireDate: _expiryDate.text, images: widget.images,),
                           ),
                         );
                       }),

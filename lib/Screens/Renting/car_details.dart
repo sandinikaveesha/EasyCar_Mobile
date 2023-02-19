@@ -1,22 +1,54 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_back_button.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Controllers/BrandController.dart';
+import 'package:rental_car_app/Models/Agency.dart';
+import 'package:rental_car_app/Models/Brand.dart';
+import 'package:rental_car_app/Models/Image.dart';
+import 'package:rental_car_app/Models/Vehicle.dart';
+import 'package:rental_car_app/Repositories/brand_repository.dart';
 import 'package:rental_car_app/Screens/Renting/calender_screen.dart';
 import 'package:rental_car_app/Screens/comments_screen.dart';
+import 'package:rental_car_app/Screens/company_details_screen.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
+import 'package:rental_car_app/Utils/utility_helper.dart';
 
-class CarDetails extends StatelessWidget {
-  const CarDetails({super.key});
+class CarDetails extends StatefulWidget {
+  CarDetails({super.key, required this.images, required this.agency, required this.vehicle});
+
+  List<VehicleImage> images;
+  Agency agency;
+  Vehicle vehicle;
 
   @override
+  State<CarDetails> createState() => _CarDetailsState();
+}
+
+class _CarDetailsState extends State<CarDetails> {
+  String brandTitle = "";
+  var _brandController = BrandController(BrandRepository());
+
+    _fetchBrand(Vehicle vehicle) async{
+      print("test");
+      Brand temp = await _brandController.getBrand(int.parse(vehicle.brand.toString()));
+      print(temp.toJson());
+      setState(() {
+        brandTitle = temp.title.toString();
+      });
+    }
+
+
+      @override
+      void initState() {
+        super.initState();
+        _fetchBrand(widget.vehicle); 
+      }
+  @override
   Widget build(BuildContext context) {
-    final List<String> imageList = [
-      'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2018-rolls-royce-phantom-1536152159.png',
-      'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2634-genesisunveilsg90exteriorimages-1638281750.jpg',
-      'https://cdn.luxe.digital/media/20220718163630/best-luxury-car-brands-bugatti-2022-luxe-digital.jpg'
-    ];
 
     return Scaffold(
       body: Container(
@@ -47,10 +79,10 @@ class CarDetails extends StatelessWidget {
             Column(
               children: [
                 CarouselSlider(
-                  items: imageList
+                  items: widget.images
                       .map((item) => Center(
-                            child: Image.network(
-                              item,
+                            child: Image.memory(
+                              Base64Decoder().convert(Utility.formatHelper(item.img.toString(),)),
                               fit: BoxFit.cover,
                               width: 1000,
                             ),
@@ -84,11 +116,11 @@ class CarDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Car Name",
+                            "${widget.vehicle.registrationNo}",
                             style: subHeading,
                           ),
                           Text(
-                            "Rs 3500/day",
+                            "Rs ${widget.vehicle.pricePerDay}/day",
                             style: normalTextBold,
                           ),
                         ],
@@ -101,7 +133,7 @@ class CarDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Company name",
+                            "${widget.agency.businessName}",
                             style: normalTextBold,
                           ),
                           Row(
@@ -128,7 +160,7 @@ class CarDetails extends StatelessWidget {
                       Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "District",
+                            "${widget.agency.address}",
                             style: normalTextBold,
                           )),
                       const SizedBox(
@@ -152,7 +184,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "Blue",
+                            "${widget.vehicle.color}",
                             style: normalText,
                           ),
                         ],
@@ -168,7 +200,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "SP-4568",
+                            "${widget.vehicle.registrationNo}",
                             style: normalText,
                           ),
                         ],
@@ -184,7 +216,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "Toyota",
+                            "${brandTitle}",
                             style: normalText,
                           ),
                         ],
@@ -200,7 +232,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "Model",
+                            "${widget.vehicle.model}",
                             style: normalText,
                           ),
                         ],
@@ -216,7 +248,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "2011",
+                            "${widget.vehicle.modelYear}",
                             style: normalText,
                           ),
                         ],
@@ -232,7 +264,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "Petrol",
+                            "${widget.vehicle.fuelType}",
                             style: normalText,
                           ),
                         ],
@@ -248,7 +280,7 @@ class CarDetails extends StatelessWidget {
                             style: normalTextBold,
                           ),
                           Text(
-                            "150 cc",
+                            "${widget.vehicle.engineCapacity} cc",
                             style: normalText,
                           ),
                         ],
@@ -260,11 +292,11 @@ class CarDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Gear Box",
+                            "Gear Type",
                             style: normalTextBold,
                           ),
                           Text(
-                            "Automatic",
+                            "${widget.vehicle.gear}",
                             style: normalText,
                           ),
                         ],
@@ -286,8 +318,23 @@ class CarDetails extends StatelessWidget {
                           style: normalTextBold,
                         ),
                       ),
+                      const SizedBox(height: 10,),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CompanyDetailsScreen(agency: widget.agency,),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "See Agency Details",
+                          style: normalTextBold,
+                        ),
+                      ),
                       const SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       Button(
                         buttonText: "Rent",
@@ -295,7 +342,7 @@ class CarDetails extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CalenderScreen(),
+                              builder: (context) => CalenderScreen( vehicle: widget.vehicle, agency: widget.agency,images: widget.images,),
                             ),
                           );
                         },

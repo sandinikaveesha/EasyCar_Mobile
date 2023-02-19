@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Models/Image.dart';
 import 'package:rental_car_app/Screens/Renting/car_details.dart';
 import 'package:rental_car_app/Screens/Renting/identification_screen.dart';
 
 import '../../Components/custom_back_button.dart';
+import '../../Models/Agency.dart';
+import '../../Models/Vehicle.dart';
 
 class CalenderScreen extends StatelessWidget {
-  const CalenderScreen({super.key});
+  CalenderScreen({super.key, required this.vehicle, required this.agency, required this.images});
+
+  Vehicle vehicle;
+  Agency agency;
+  List<VehicleImage> images;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +37,10 @@ class CalenderScreen extends StatelessWidget {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CarDetails()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const CarDetails()));
                   },
                 ),
                 const Text("Select Date", style: mainHeadingLight,),
@@ -43,6 +50,7 @@ class CalenderScreen extends StatelessWidget {
             TextFormField(
               readOnly: true,
               controller: _bookingDateController,
+              style: normalTextLight,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                 hintStyle: normalTextLight,
@@ -83,11 +91,13 @@ class CalenderScreen extends StatelessWidget {
             const SizedBox(height: 20,),
             TextFormField(
               readOnly: true,
-              controller: _bookingDateController,
+              controller: _returnDateController,
+              style: normalTextLight,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                hintStyle: normalTextLight,
+                hintStyle: normalTextLight,      
                 hintText: 'Select return date and time',
+                fillColor: Colors.white,
                 prefixIcon: const Icon(Icons.calendar_today),
                 prefixIconColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
@@ -124,7 +134,10 @@ class CalenderScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            Button(buttonText: "Next", action: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const IdentificationScreen()));})
+            Button(buttonText: "Next", action: (){
+              // TODO: Validadate The Data
+              print(_returnDateController.text);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> IdentificationScreen(vehicle: vehicle, startDate: _bookingDateController.text, endDate: _returnDateController.text, agency: agency,images: images,)));})
           ],
         ),
       ),

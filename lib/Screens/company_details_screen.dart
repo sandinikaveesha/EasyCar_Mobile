@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:rental_car_app/Components/map_box.dart';
+import 'package:rental_car_app/Models/Agency.dart';
+import 'package:rental_car_app/Models/Location.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
 
 import '../Components/custom_back_button.dart';
 import '../Constants/constant.dart';
 
 class CompanyDetailsScreen extends StatelessWidget {
-  const CompanyDetailsScreen({super.key});
+  const CompanyDetailsScreen({super.key, required this.agency});
+
+  final Agency agency;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +42,17 @@ class CompanyDetailsScreen extends StatelessWidget {
                   },
                 ),
                 const Text(
-                  "Company Details",
+                  "Agency Details",
                   style: mainHeadingLight,
                 ),
               ],
             ),
             const SizedBox(height: 40,),
-            const Text("Company Name", style: subHeadingLight,),
+            Text("${agency.businessName}", style: subHeadingLight,),
             const SizedBox(height: 10,),
-            const Text("Company Address", style: subHeadingLight,),
+            Text("${agency.brno}", style: subHeadingLight,),
+            const SizedBox(height: 10,),
+            Text("${agency.address}", style: subHeadingLight,),
             const SizedBox(height: 30,),
             Center(
               child: Container(
@@ -55,6 +62,7 @@ class CompanyDetailsScreen extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: ClipRRect(child: MapBox(locations: [Location(latitude: agency.lat, longitude: agency.lon)],),clipBehavior: Clip.antiAlias, borderRadius: BorderRadius.circular(10),),
               ),
             )
           ],

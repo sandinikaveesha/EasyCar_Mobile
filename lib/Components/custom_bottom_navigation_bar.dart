@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:rental_car_app/Screens/booking_details_screen.dart';
 import 'package:rental_car_app/Screens/home_screen.dart';
+import 'package:rental_car_app/Screens/profile_screen.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({Key? key, required this.index}) : super(key: key);
@@ -49,14 +51,27 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               },
             ),
             GButton(
-              icon: Icons.contact_page,
+              icon: Icons.list,
               iconColor: Colors.white,
-              text: 'Create',
+              text: 'Bookings',
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
+                    builder: (context) => BookingDetailsScreen(),
+                  ),
+                );
+              },
+            ),
+            GButton(
+              icon: Icons.person,
+              iconColor: Colors.white,
+              text: 'Profile',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
                   ),
                 );
               },

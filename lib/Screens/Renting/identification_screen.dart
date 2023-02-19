@@ -4,41 +4,62 @@ import 'package:flutter/material.dart';
 import 'package:rental_car_app/Components/button.dart';
 import 'package:rental_car_app/Components/custom_textbox.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rental_car_app/Models/Agency.dart';
+import 'package:rental_car_app/Models/Image.dart';
+import 'package:rental_car_app/Models/Vehicle.dart';
 import 'package:rental_car_app/Screens/Renting/license_screen.dart';
+import 'package:rental_car_app/Utils/utility_helper.dart';
 import '../../Components/custom_back_button.dart';
 import '../../Constants/constant.dart';
 import '../../Utils/image_utility.dart';
 import 'car_details.dart';
 
 class IdentificationScreen extends StatefulWidget {
-  const IdentificationScreen({super.key});
+  IdentificationScreen({super.key, required this.images,required this.vehicle, required this.startDate, required this.endDate, required this.agency});
+
+  Vehicle vehicle;
+  String startDate;
+  String endDate;
+  Agency agency;
+  List<VehicleImage> images;
 
   @override
   State<IdentificationScreen> createState() => _IdentificationScreenState();
 }
 
 class _IdentificationScreenState extends State<IdentificationScreen> {
-  late String valueChoose;
-  List listItems = ['National ID', 'Passport'];
+  String valueChoose='Select Identification Type';
+  List listItems = ['Select Identification Type','National ID', 'Passport'];
   final TextEditingController _idNumber = TextEditingController();
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
+  String nicFront = sampleUpload;
+  String nicBack = sampleUpload;
 
-  @override
-  Widget build(BuildContext context) {
-    String imgString = sampleUpload;
-    // Handle Image Picker
-    _imagePicker() async {
+   // Handle Image Picker
+    _imagePicker(path) async {
       String output;
       ImagePicker().pickImage(source: ImageSource.gallery).then((img) async {
-        output = ImageUtility.base64String(await img!.readAsBytes());
+        output = Utility.base64String(await img!.readAsBytes());
         print(output);
-        setState(() {
-          imgString = output;
-        });
+        if(path == 'nicFront'){
+          setState(() {
+            nicFront = output;
+          });
+        }
+        else{
+          setState(() {
+            nicBack = output;
+          });
+        }
+        
       });
     }
 
+  @override
+  Widget build(BuildContext context) {
+    
+  
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 22, 22, 22),
@@ -57,10 +78,10 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
               children: [
                 CustomBackButton(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CarDetails()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const CarDetails()));
                   },
                 ),
                 const Text(
@@ -89,8 +110,9 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                       border: Border.all(color: Colors.white, width: 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropdownButton(
-                        dropdownColor: Colors.white,
+                    child: DropdownButton<String>(
+                        value: valueChoose,
+                        dropdownColor: Colors.black,
                         hint: const Text(
                           "Select Identification Type",
                           style: normalTextLight,
@@ -102,14 +124,15 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                         iconSize: 24,
                         underline: const SizedBox(),
                         items: listItems.map((valueItem) {
-                          return DropdownMenuItem(
+                          return DropdownMenuItem<String>(
                             value: valueItem,
-                            child: Text(valueItem),
+                            child: Text(valueItem, style: normalTextLight,),
                           );
                         }).toList(),
-                        onChanged: (newValue) {
+                        onChanged: (String? value) {
+                          print(value);
                           setState(() {
-                            valueChoose != newValue;
+                            valueChoose = value!;
                           });
                         }),
                   ),
@@ -148,7 +171,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: _imagePicker,
+                        onTap: ()=>_imagePicker('nicFront'),
                         child: SizedBox(
                           height: 100,
                           width: 150,
@@ -156,14 +179,14 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              Base64Decoder().convert(imgString),
+                              Base64Decoder().convert(nicFront),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: _imagePicker,
+                        onTap: ()=>_imagePicker('nicBack'),
                         child: SizedBox(
                           height: 100,
                           width: 150,
@@ -171,7 +194,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                             clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.memory(
-                              Base64Decoder().convert(imgString),
+                              Base64Decoder().convert(nicBack),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -185,10 +208,11 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                   Button(
                       buttonText: "Next",
                       action: () {
+                        // TODO: Validate the Data
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const LicenseScreen(),
+                            builder: (context) => LicenseScreen(vehicle: widget.vehicle, startDate: widget.startDate, endDate: widget.endDate, idType: valueChoose, id: _idNumber.text, firstName: _firstName.text, lastName: _lastName.text, agency: widget.agency,images: widget.images,),
                           ),
                         );
                       }),

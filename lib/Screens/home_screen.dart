@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rental_car_app/Components/vehicle_details_card.dart';
 import 'package:rental_car_app/Constants/constant.dart';
+import 'package:rental_car_app/Models/Category.dart';
+import 'package:rental_car_app/Models/Vehicle.dart';
+import 'package:rental_car_app/Provider/vehicle_provider.dart';
 import '../Components/custom_bottom_navigation_bar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+
+  @override
   Widget build(BuildContext context) {
-    
+    List<Category>  categories = context.watch<VehicleProvider>().categories;
+    List<Vehicle> vehicles = context.watch<VehicleProvider>().vehicles;
+
+    fetchVehicles() async{
+      List<Vehicle> vehicles = context.watch<VehicleProvider>().vehicles;
+      return vehicles;
+    }
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -93,10 +111,12 @@ class HomeScreen extends StatelessWidget {
               flex: 1,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
+                itemCount: categories.length,
                 itemBuilder: (context,index){
                 return GestureDetector(
-                  onTap: (){},
+                  onTap: (){
+                    Provider.of<VehicleProvider>(context, listen: false).filterCategory(1);
+                  },
                   child: Container(
                     width: 80,
                     margin: const EdgeInsets.only(right: 10),
@@ -106,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                     child: Center(
-                      child: Text("Name", style: normalTextBold,),
+                      child: Text("${categories[index].title}", style: normalTextBold,),
                     ),
                   ),
                 );
@@ -120,9 +140,28 @@ class HomeScreen extends StatelessWidget {
                 style: subHeadingLight,
               ),
             ),
+            // Expanded(
+            //   flex: 10,
+            //   child: ListView.builder(itemBuilder: (context, index) => VehicleDetailsCard(vehicle: vehicles[index],), itemCount: vehicles.length,))
             Expanded(
-              flex: 10,
-              child: ListView.builder(itemBuilder: (context, index) => VehicleDetailsCard(), itemCount: 5,))
+  flex: 10,
+  child: FutureBuilder<List<Vehicle>>(
+    future: fetchVehicles(), // replace with your own Future method that returns a List<Vehicle>
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        List<Vehicle> vehicles = snapshot.data!;
+        return ListView.builder(
+          itemCount: vehicles.length,
+          itemBuilder: (context, index) => VehicleDetailsCard(vehicle: vehicles[index]),
+        );
+      } else if (snapshot.hasError) {
+        return Text("Error: ${snapshot.error}");
+      } else {
+        return Center(child: CircularProgressIndicator());
+      }
+    },
+  ),
+)
           ],
         ),
       ),
